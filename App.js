@@ -24,6 +24,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function App() {
+    // query
     const Stack = createNativeStackNavigator();
 
     const [foundToken, setFoundToken] = useState("");
