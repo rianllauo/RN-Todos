@@ -20,7 +20,7 @@ import axios from "axios";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HomeScreen = ({ logoutAction }) => {
+const HomeScreen = ({ logoutAction, navigation }) => {
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState("");
 
@@ -267,7 +267,11 @@ const HomeScreen = ({ logoutAction }) => {
             renderItem={({ item }) => {
                 return (
                     <Box px={4} bg="white">
-                        <CardTodo data={item} key={item.id} />
+                        <CardTodo
+                            data={item}
+                            key={item.id}
+                            navigation={navigation}
+                        />
                     </Box>
                 );
             }}

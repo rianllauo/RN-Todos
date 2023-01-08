@@ -1,0 +1,62 @@
+// {/\* <Tab.Navigator
+// screenOptions={({ route }) => ({
+// tabBarIcon: ({
+// focused,
+// color,
+// size,
+// }) => {
+// let home;
+// let addList;
+// let category;
+
+// if (route.name === "HomeScreen") {
+// home = focused
+// ? "clipboard-list"
+// : "clipboard-list";
+// } else if (
+// route.name === "AddList"
+// ) {
+// addList = focused
+// ? "post-add"
+// : "post-add";
+// } else if (
+// route.name === "Category"
+// ) {
+// category = focused
+// ? "category"
+// : "category";
+// }
+
+// if (route.name === "Category") {
+// return (
+// <MaterialIcons
+// name={category}
+// size={size}
+// color={color}
+// />
+// );
+// }
+// if (route.name === "HomeScreen") {
+// return (
+// <FontAwesome5
+// name={home}
+// size={size}
+// color={color}
+// />
+// );
+// }
+// if (route.name === "AddList") {
+// return (
+// <MaterialIcons
+// name={addList}
+// size={size}
+// color={color}
+// />
+// );
+// }
+// },
+// tabBarActiveTintColor: "#dc2626",
+// tabBarInactiveTintColor: "gray",
+// tabBarShowLabel: false,
+// })}
+// > \*/}

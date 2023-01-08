@@ -22,10 +22,12 @@ import AddList from "./screens/AddList";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import Detail from "./screens/Detail";
 
 export default function App() {
     // query
     const Stack = createNativeStackNavigator();
+    const HomeStack = createNativeStackNavigator();
 
     const [foundToken, setFoundToken] = useState("");
     const [isLoad, setIsLoad] = useState(true);
@@ -102,144 +104,80 @@ export default function App() {
         // fecthUser();
     }, []);
 
-    // console.log(todos);
-
     return (
         <NavigationContainer>
             <NativeBaseProvider>
-                <StatusBar style={{ color: "black" }} />
+                {foundToken ? (
+                    <>
+                        <Tab.Navigator screenOptions={{ headerShown: false }}>
+                            <Tab.Screen name="Home">
+                                {() => (
+                                    <HomeStack.Navigator>
+                                        <HomeStack.Screen
+                                            name="HomeScreen"
+                                            options={{ headerShown: false }}
+                                        >
+                                            {(props) => (
+                                                <HomeScreen
+                                                    {...props}
+                                                    logoutAction={logoutAction}
+                                                    loadingAction={loading}
+                                                />
+                                            )}
+                                        </HomeStack.Screen>
+                                        <HomeStack.Screen
+                                            name="Detail"
+                                            component={Detail}
+                                        />
+                                    </HomeStack.Navigator>
+                                )}
+                            </Tab.Screen>
 
-                <Stack.Navigator>
-                    {foundToken ? (
-                        <Stack.Screen
-                            name="Home"
-                            options={{ headerShown: false }}
-                        >
-                            {() => (
-                                <Tab.Navigator
-                                    screenOptions={({ route }) => ({
-                                        tabBarIcon: ({
-                                            focused,
-                                            color,
-                                            size,
-                                        }) => {
-                                            let home;
-                                            let addList;
-                                            let category;
-
-                                            if (route.name === "HomeScreen") {
-                                                home = focused
-                                                    ? "clipboard-list"
-                                                    : "clipboard-list";
-                                            } else if (
-                                                route.name === "AddList"
-                                            ) {
-                                                addList = focused
-                                                    ? "post-add"
-                                                    : "post-add";
-                                            } else if (
-                                                route.name === "Category"
-                                            ) {
-                                                category = focused
-                                                    ? "category"
-                                                    : "category";
-                                            }
-
-                                            if (route.name === "Category") {
-                                                return (
-                                                    <MaterialIcons
-                                                        name={category}
-                                                        size={size}
-                                                        color={color}
-                                                    />
-                                                );
-                                            }
-                                            if (route.name === "HomeScreen") {
-                                                return (
-                                                    <FontAwesome5
-                                                        name={home}
-                                                        size={size}
-                                                        color={color}
-                                                    />
-                                                );
-                                            }
-                                            if (route.name === "AddList") {
-                                                return (
-                                                    <MaterialIcons
-                                                        name={addList}
-                                                        size={size}
-                                                        color={color}
-                                                    />
-                                                );
-                                            }
-                                        },
-                                        tabBarActiveTintColor: "#dc2626",
-                                        tabBarInactiveTintColor: "gray",
-                                        tabBarShowLabel: false,
-                                    })}
-                                >
-                                    <Tab.Screen
-                                        name="HomeScreen"
-                                        options={{ headerShown: false }}
-                                    >
-                                        {(props) => (
-                                            <HomeScreen
-                                                {...props}
-                                                logoutAction={logoutAction}
-                                                loadingAction={loading}
-                                            />
-                                        )}
-                                    </Tab.Screen>
-                                    <Tab.Screen
-                                        name="AddList"
-                                        options={{ headerShown: false }}
-                                    >
-                                        {(props) => <AddList {...props} />}
-                                    </Tab.Screen>
-                                    <Tab.Screen
-                                        name="Category"
-                                        options={{ headerShown: false }}
-                                    >
-                                        {(props) => (
-                                            <Category
-                                                {...props}
-                                                userId={userID}
-                                            />
-                                        )}
-                                    </Tab.Screen>
-                                </Tab.Navigator>
-                            )}
-                        </Stack.Screen>
-                    ) : (
-                        <>
-                            <Stack.Screen
-                                name="Home"
-                                component={Home}
+                            <Tab.Screen
+                                name="AddList"
                                 options={{ headerShown: false }}
-                            />
-
-                            <Stack.Screen
-                                name="Login"
+                            >
+                                {(props) => <AddList {...props} />}
+                            </Tab.Screen>
+                            <Tab.Screen
+                                name="Category"
                                 options={{ headerShown: false }}
                             >
                                 {(props) => (
-                                    <Login
-                                        {...props}
-                                        user={user}
-                                        handleLogin={handleLogin}
-                                        setUser={setUser}
-                                        loading={loading}
-                                    />
+                                    <Category {...props} userId={userID} />
                                 )}
-                            </Stack.Screen>
-                            <Stack.Screen
-                                name="Register"
-                                component={Register}
-                                options={{ headerShown: false }}
-                            />
-                        </>
-                    )}
-                </Stack.Navigator>
+                            </Tab.Screen>
+                        </Tab.Navigator>
+                    </>
+                ) : (
+                    <>
+                        <Stack.Screen
+                            name="Home"
+                            component={Home}
+                            options={{ headerShown: false }}
+                        />
+
+                        <Stack.Screen
+                            name="Login"
+                            options={{ headerShown: false }}
+                        >
+                            {(props) => (
+                                <Login
+                                    {...props}
+                                    user={user}
+                                    handleLogin={handleLogin}
+                                    setUser={setUser}
+                                    loading={loading}
+                                />
+                            )}
+                        </Stack.Screen>
+                        <Stack.Screen
+                            name="Register"
+                            component={Register}
+                            options={{ headerShown: false }}
+                        />
+                    </>
+                )}
             </NativeBaseProvider>
         </NavigationContainer>
     );

@@ -14,11 +14,11 @@ import {
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const CardTodo = ({ data }) => {
+const CardTodo = ({ data, navigation }) => {
     return (
         <Box>
             <Pressable
-                onPress={() => console.log("I'm Pressed")}
+                onPress={() => navigation.navigate("Detail")}
                 rounded="8"
                 overflow="hidden"
                 marginBottom={3}
