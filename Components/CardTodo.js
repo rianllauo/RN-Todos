@@ -31,6 +31,9 @@ const CardTodo = ({ data, navigation }) => {
     const dateFormat = moment(data.date).format("DD MMMM YYYY");
     console.log(dateFormat);
 
+
+const CardTodo = ({ data, navigation }) => {
+
     return (
         <Box>
             <Pressable

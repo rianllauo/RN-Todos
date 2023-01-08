@@ -22,7 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "react-query";
 import { RefreshControl } from "react-native";
 
-const HomeScreen = ({ logoutAction }) => {
+const HomeScreen = ({ logoutAction, navigation }) => {
     const [date, setDate] = useState(new Date());
     const [refreshing, setRefreshing] = useState(true);
 
@@ -283,7 +283,11 @@ const HomeScreen = ({ logoutAction }) => {
             renderItem={({ item }) => {
                 return (
                     <Box px={4} bg="white">
-                        <CardTodo data={item} key={item.id} />
+                        <CardTodo
+                            data={item}
+                            key={item.id}
+                            navigation={navigation}
+                        />
                     </Box>
                 );
             }}
