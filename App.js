@@ -22,6 +22,9 @@ import AddList from "./screens/AddList";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+
+import { QueryClient, QueryClientProvider } from "react-query";
+
 import Detail from "./screens/Detail";
 
 export default function App() {
@@ -103,6 +106,7 @@ export default function App() {
         getData();
         // fecthUser();
     }, []);
+
 
     return (
         <NavigationContainer>

@@ -11,10 +11,29 @@ import {
     FlatList,
     ScrollView,
 } from "native-base";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import moment from "moment";
 
 const CardTodo = ({ data, navigation }) => {
+    const [category, setCategory] = useState({});
+
+    const dataCategory = () => {
+        data.category.map((category) => {
+            setCategory(category);
+        });
+    };
+
+    useEffect(() => {
+        dataCategory();
+    }, []);
+
+    const dateFormat = moment(data.date).format("DD MMMM YYYY");
+    console.log(dateFormat);
+
+
+const CardTodo = ({ data, navigation }) => {
+
     return (
         <Box>
             <Pressable
@@ -23,7 +42,7 @@ const CardTodo = ({ data, navigation }) => {
                 overflow="hidden"
                 marginBottom={3}
                 maxW="96"
-                bg="blue.100"
+                bg={data.color}
                 p="5"
             >
                 <Box
@@ -34,9 +53,10 @@ const CardTodo = ({ data, navigation }) => {
                     <Text fontSize={"xl"} fontWeight="bold">
                         {data.title}
                     </Text>
-                    <Badge bg={"red.500"} borderRadius="md">
+
+                    <Badge bg={category.color} borderRadius="md">
                         <Text color="white" fontWeight={"medium"}>
-                            Study
+                            {category.name_category}
                         </Text>
                     </Badge>
                 </Box>
@@ -53,7 +73,7 @@ const CardTodo = ({ data, navigation }) => {
                         </Text>
                         <HStack marginTop={6} space="2">
                             <Ionicons name="calendar-outline" size={20} />
-                            <Text>{data.date}</Text>
+                            <Text>{dateFormat}</Text>
                         </HStack>
                         {/* <Box marginTop={6} display="flex" flexDirection={"row"} >
                            
