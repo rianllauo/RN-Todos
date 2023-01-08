@@ -5,16 +5,14 @@ const BadgeCategory = ({ data }) => {
     return (
         <Box
             bg={data.color}
-            margin="2"
-            px="2"
-            py={"1.5"}
-            w="24"
-            borderRadius={"md"}
+            px="3"
+            py={"1"}
+            borderRadius="md"
             display="flex"
             justifyContent="center"
             alignItems="center"
         >
-            <Text color={"white"} fontWeight="bold">
+            <Text color={"white"} fontWeight="medium">
                 {data.name_category}
             </Text>
         </Box>

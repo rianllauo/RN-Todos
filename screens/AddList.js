@@ -24,6 +24,15 @@ const AddList = () => {
     const [dataCategory, setDataCategory] = useState();
     const [userID, setUserID] = useState();
 
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem("userID");
+            setUserID(value);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     const dateFormatted = moment(date).format("YYYY-MM-DD");
 
     const [list, setList] = useState({
@@ -33,15 +42,32 @@ const AddList = () => {
         date: dateFormatted,
         Users: [],
         isDone: false,
-        // color: "",
+        color: "",
     });
 
-    const getData = async () => {
-        try {
-            const value = await AsyncStorage.getItem("userID");
-            setUserID(value);
-        } catch (e) {
-            console.log(e);
+    const [color, setColor] = useState();
+
+    // constum color
+    const getColor = () => {
+        const number = Math.random();
+        if (number > 0 && number < 0.15) {
+            setColor("#fecaca");
+        } else if (number > 0.16 && number < 0.25) {
+            setColor("#bbf7d0");
+        } else if (number > 0.26 && number < 0.35) {
+            setColor("#a5f3fc");
+        } else if (number > 0.36 && number < 0.45) {
+            setColor("#bae6fd");
+        } else if (number > 0.46 && number < 0.55) {
+            setColor("#e9d5ff");
+        } else if (number > 0.56 && number < 0.65) {
+            setColor("#fed7aa");
+        } else if (number > 0.66 && number < 0.75) {
+            setColor("#fef08a");
+        } else if (number > 0.76 && number < 0.85) {
+            setColor("#ddd6fe");
+        } else if (number > 0.86 && number < 1) {
+            setColor("#f5d0fe");
         }
     };
 
@@ -105,9 +131,15 @@ const AddList = () => {
                         variant={"filled"}
                         placeholder="Name"
                         w="100%"
-                        onChangeText={(text) =>
-                            setList({ ...list, title: text, Users: [userID] })
-                        }
+                        onChangeText={(text) => {
+                            getColor();
+                            setList({
+                                ...list,
+                                title: text,
+                                Users: [userID],
+                                color: color,
+                            });
+                        }}
                     />
 
                     <Select

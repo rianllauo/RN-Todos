@@ -22,9 +22,12 @@ import AddList from "./screens/AddList";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { QueryClient, QueryClientProvider } from "react-query";
+import Detail from "./screens/Detail";
 
 export default function App() {
     const Stack = createNativeStackNavigator();
+    const HomeStack = createNativeStackNavigator();
 
     const [foundToken, setFoundToken] = useState("");
     const [isLoad, setIsLoad] = useState(true);
@@ -101,114 +104,126 @@ export default function App() {
         // fecthUser();
     }, []);
 
-    // console.log(todos);
-
+    const client = new QueryClient();
     return (
         <NavigationContainer>
-            <NativeBaseProvider>
-                <StatusBar style={{ color: "black" }} />
+            <QueryClientProvider client={client}>
+                <NativeBaseProvider>
+                    <StatusBar style={{ color: "black" }} />
 
-                <Stack.Navigator>
+                    {/* <Stack.Navigator> */}
                     {foundToken ? (
-                        <Stack.Screen
-                            name="Home"
-                            options={{ headerShown: false }}
-                        >
-                            {() => (
-                                <Tab.Navigator
-                                    screenOptions={({ route }) => ({
-                                        tabBarIcon: ({
-                                            focused,
-                                            color,
-                                            size,
-                                        }) => {
-                                            let home;
-                                            let addList;
-                                            let category;
+                        <>
+                            <Stack.Screen
+                                name="Home"
+                                options={{ headerShown: false }}
+                            >
+                                {() => (
+                                    <Tab.Navigator
+                                        screenOptions={({ route }) => ({
+                                            tabBarIcon: ({
+                                                focused,
+                                                color,
+                                                size,
+                                            }) => {
+                                                let home;
+                                                let addList;
+                                                let category;
 
-                                            if (route.name === "HomeScreen") {
-                                                home = focused
-                                                    ? "clipboard-list"
-                                                    : "clipboard-list";
-                                            } else if (
-                                                route.name === "AddList"
-                                            ) {
-                                                addList = focused
-                                                    ? "post-add"
-                                                    : "post-add";
-                                            } else if (
-                                                route.name === "Category"
-                                            ) {
-                                                category = focused
-                                                    ? "category"
-                                                    : "category";
-                                            }
+                                                if (
+                                                    route.name === "HomeScreen"
+                                                ) {
+                                                    home = focused
+                                                        ? "clipboard-list"
+                                                        : "clipboard-list";
+                                                } else if (
+                                                    route.name === "AddList"
+                                                ) {
+                                                    addList = focused
+                                                        ? "post-add"
+                                                        : "post-add";
+                                                } else if (
+                                                    route.name === "Category"
+                                                ) {
+                                                    category = focused
+                                                        ? "category"
+                                                        : "category";
+                                                }
 
-                                            if (route.name === "Category") {
-                                                return (
-                                                    <MaterialIcons
-                                                        name={category}
-                                                        size={size}
-                                                        color={color}
-                                                    />
-                                                );
-                                            }
-                                            if (route.name === "HomeScreen") {
-                                                return (
-                                                    <FontAwesome5
-                                                        name={home}
-                                                        size={size}
-                                                        color={color}
-                                                    />
-                                                );
-                                            }
-                                            if (route.name === "AddList") {
-                                                return (
-                                                    <MaterialIcons
-                                                        name={addList}
-                                                        size={size}
-                                                        color={color}
-                                                    />
-                                                );
-                                            }
-                                        },
-                                        tabBarActiveTintColor: "#dc2626",
-                                        tabBarInactiveTintColor: "gray",
-                                        tabBarShowLabel: false,
-                                    })}
-                                >
-                                    <Tab.Screen
-                                        name="HomeScreen"
-                                        options={{ headerShown: false }}
+                                                if (route.name === "Category") {
+                                                    return (
+                                                        <MaterialIcons
+                                                            name={category}
+                                                            size={size}
+                                                            color={color}
+                                                        />
+                                                    );
+                                                }
+                                                if (
+                                                    route.name === "HomeScreen"
+                                                ) {
+                                                    return (
+                                                        <FontAwesome5
+                                                            name={home}
+                                                            size={size}
+                                                            color={color}
+                                                        />
+                                                    );
+                                                }
+                                                if (route.name === "AddList") {
+                                                    return (
+                                                        <MaterialIcons
+                                                            name={addList}
+                                                            size={size}
+                                                            color={color}
+                                                        />
+                                                    );
+                                                }
+                                            },
+                                            tabBarActiveTintColor: "#dc2626",
+                                            tabBarInactiveTintColor: "gray",
+                                            tabBarShowLabel: false,
+                                        })}
                                     >
-                                        {(props) => (
-                                            <HomeScreen
-                                                {...props}
-                                                logoutAction={logoutAction}
-                                                loadingAction={loading}
-                                            />
-                                        )}
-                                    </Tab.Screen>
-                                    <Tab.Screen
-                                        name="AddList"
-                                        options={{ headerShown: false }}
-                                    >
-                                        {(props) => <AddList {...props} />}
-                                    </Tab.Screen>
-                                    <Tab.Screen
-                                        name="Category"
-                                        options={{ headerShown: false }}
-                                    >
-                                        {(props) => (
-                                            <Category
-                                                {...props}
-                                                userId={userID}
-                                            />
-                                        )}
-                                    </Tab.Screen>
-                                </Tab.Navigator>
-                            )}
-                        </Stack.Screen>
+                                        <Tab.Screen
+                                            name="HomeScreen"
+                                            options={{
+                                                headerShown: false,
+                                            }}
+                                        >
+                                            {(props) => (
+                                                <HomeScreen
+                                                    {...props}
+                                                    logoutAction={logoutAction}
+                                                    loadingAction={loading}
+                                                />
+                                            )}
+                                        </Tab.Screen>
+                                        <Tab.Screen
+                                            name="AddList"
+                                            options={{
+                                                headerShown: false,
+                                            }}
+                                        >
+                                            {(props) => <AddList {...props} />}
+                                        </Tab.Screen>
+                                        <Tab.Screen
+                                            name="Category"
+                                            options={{
+                                                headerShown: false,
+                                            }}
+                                        >
+                                            {(props) => (
+                                                <Category
+                                                    {...props}
+                                                    userId={userID}
+                                                />
+                                            )}
+                                        </Tab.Screen>
+                                    </Tab.Navigator>
+                                )}
+                            </Stack.Screen>
+                        </>
                     ) : (
                         <>
                             <Stack.Screen
@@ -238,8 +253,9 @@ export default function App() {
                             />
                         </>
                     )}
-                </Stack.Navigator>
-            </NativeBaseProvider>
+                    {/* </Stack.Navigator> */}
+                </NativeBaseProvider>
+            </QueryClientProvider>
         </NavigationContainer>
     );
 }

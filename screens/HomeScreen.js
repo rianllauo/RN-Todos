@@ -19,10 +19,12 @@ import CardTodo from "../Components/CardTodo";
 import axios from "axios";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "react-query";
+import { RefreshControl } from "react-native";
 
 const HomeScreen = ({ logoutAction }) => {
     const [date, setDate] = useState(new Date());
-    const [loading, setLoading] = useState("");
+    const [refreshing, setRefreshing] = useState(true);
 
     const [userID, setUserID] = useState();
     const getData = async () => {
@@ -36,40 +38,52 @@ const HomeScreen = ({ logoutAction }) => {
 
     useEffect(() => {
         getData();
+        refetch;
     }, []);
 
     useEffect(() => {
         fecthUser();
-        fetchTodo();
+        // fetchTodo();
     }, [userID]);
 
     // console.log(userID);
 
     // render todo list
-    const [todos, setTodos] = useState();
 
-    const fetchTodo = async () => {
-        setLoading("loading...");
-        const response = await axios.get(
-            `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/todos?$lookup=*&Users[0]=${userID}`
-        );
+    // const [todos, setTodos] = useState();
 
-        setTodos(response.data);
-        setLoading("");
-    };
+    // const fetchTodo = async () => {
+    //     const response = await axios.get(
+    //         `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/todos?$lookup=*&Users[0]=${userID}`
+    //     );
+    //     setRefreshing(false);
+    //     setTodos(response.data);
+    //     // setLoading("");
+    // };
+
+    const { data: todos, refetch } = useQuery(
+        ["CacheTodos", userID],
+        async () => {
+            const response = await axios.get(
+                `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/todos?$lookup=*&Users[0]=${userID}`
+            );
+            setRefreshing(false);
+            return response.data;
+            // setTodos(response.data);
+        }
+    );
+    console.log(todos);
 
     // render get user
     const [dataUser, setDataUser] = useState();
 
     const fecthUser = async () => {
-        setLoading("Loading...");
         const response = await axios.get(
             `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/Users/${userID}`
         );
 
         setDataUser(response.data);
         console.log(response.data);
-        setLoading("");
     };
 
     const onChange = (event, selectedDate) => {
@@ -90,7 +104,9 @@ const HomeScreen = ({ logoutAction }) => {
         <FlatList
             bg={"white"}
             data={todos ? todos : null}
-            // onRefresh={() => onRefresh}
+            // refreshControl={
+            //     <RefreshControl refreshing={refreshing} onRefresh={fetchTodo} />
+            // }
             extraData={todos}
             ListHeaderComponent={
                 <Box pt={12} px={"4"} bg="white">
