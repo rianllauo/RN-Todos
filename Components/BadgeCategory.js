@@ -7,6 +7,7 @@ const BadgeCategory = ({ data }) => {
             bg={data.color}
             px="3"
             py={"1"}
+            m={"1.5"}
             borderRadius="md"
             display="flex"
             justifyContent="center"

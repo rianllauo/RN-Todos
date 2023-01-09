@@ -29,15 +29,13 @@ const CardTodo = ({ data, navigation }) => {
     }, []);
 
     const dateFormat = moment(data.date).format("DD MMMM YYYY");
-    console.log(dateFormat);
-
-
-const CardTodo = ({ data, navigation }) => {
 
     return (
         <Box>
             <Pressable
-                onPress={() => navigation.navigate("Detail")}
+                onPress={() =>
+                    navigation.navigate("Detail", { itemId: data._id })
+                }
                 rounded="8"
                 overflow="hidden"
                 marginBottom={3}
@@ -68,8 +66,14 @@ const CardTodo = ({ data, navigation }) => {
                     alignItems="center"
                 >
                     <Box flex={1} maxW="4/5">
-                        <Text color={"gray.500"} fontSize="xs">
-                            {data.notes}
+                        <Text
+                            color={"gray.500"}
+                            fontSize="xs"
+                            numberOfLines={2}
+                        >
+                            {data.notes.length < 100
+                                ? `${data.notes}`
+                                : `${data.notes.substring(0, 200)}...`}
                         </Text>
                         <HStack marginTop={6} space="2">
                             <Ionicons name="calendar-outline" size={20} />

@@ -38,7 +38,6 @@ const HomeScreen = ({ logoutAction, navigation }) => {
 
     useEffect(() => {
         getData();
-        refetch;
     }, []);
 
     useEffect(() => {
@@ -50,28 +49,28 @@ const HomeScreen = ({ logoutAction, navigation }) => {
 
     // render todo list
 
-    // const [todos, setTodos] = useState();
+    const [todos, setTodos] = useState();
 
-    // const fetchTodo = async () => {
-    //     const response = await axios.get(
-    //         `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/todos?$lookup=*&Users[0]=${userID}`
-    //     );
-    //     setRefreshing(false);
-    //     setTodos(response.data);
-    //     // setLoading("");
-    // };
+    const fetchTodo = async () => {
+        const response = await axios.get(
+            `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/todos?$lookup=*&Users[0]=${userID}`
+        );
+        setRefreshing(false);
+        setTodos(response.data);
+        // setLoading("");
+    };
 
-    const { data: todos, refetch } = useQuery(
-        ["CacheTodos", userID],
-        async () => {
-            const response = await axios.get(
-                `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/todos?$lookup=*&Users[0]=${userID}`
-            );
-            setRefreshing(false);
-            return response.data;
-            // setTodos(response.data);
-        }
-    );
+    // const { data: todos, refetch } = useQuery(
+    //     ["CacheTodos", userID],
+    //     async () => {
+    //         const response = await axios.get(
+    //             `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/todos?$lookup=*&Users[0]=${userID}`
+    //         );
+    //         setRefreshing(false);
+    //         return response.data;
+    //         // setTodos(response.data);
+    //     }
+    // );
     console.log(todos);
 
     // render get user
@@ -81,7 +80,6 @@ const HomeScreen = ({ logoutAction, navigation }) => {
         const response = await axios.get(
             `https://api.kontenbase.com/query/api/v1/c96cdbdc-16c9-44b4-83e8-c61b4d3f6761/Users/${userID}`
         );
-
         setDataUser(response.data);
         console.log(response.data);
     };
@@ -100,13 +98,40 @@ const HomeScreen = ({ logoutAction, navigation }) => {
         });
     };
 
+    // get greeting by date
+    const getTime = new Date();
+    const time = getTime.getHours();
+    const [day, setDay] = useState();
+
+    const DayTime = time > 6 && time < 18;
+    const DayNight = time > 18 && time < 24;
+    const Subuh = time > 0 && time < 6;
+
+    const getDayNight = () => {
+        if (DayTime === true) {
+            setDay("Siang");
+        }
+        if (DayNight === true) {
+            setDay("Malam");
+        }
+        if (Subuh === true) {
+            setDay("Subuh");
+        }
+    };
+
+    useEffect(() => {
+        getDayNight();
+    }, []);
+
+    console.log(time);
+
     return (
         <FlatList
             bg={"white"}
             data={todos ? todos : null}
-            // refreshControl={
-            //     <RefreshControl refreshing={refreshing} onRefresh={fetchTodo} />
-            // }
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={fetchTodo} />
+            }
             extraData={todos}
             ListHeaderComponent={
                 <Box pt={12} px={"4"} bg="white">
@@ -125,14 +150,14 @@ const HomeScreen = ({ logoutAction, navigation }) => {
                                     fontWeight="bold"
                                     key={1}
                                 >
-                                    Hi, Selamat Malam
+                                    Hi, {dataUser?.firstName}
                                 </Text>
                                 <Text
                                     fontSize={"2xl"}
                                     fontWeight="bold"
                                     key={2}
                                 >
-                                    {dataUser?.firstName}
+                                    Selamat {day}
                                 </Text>
                             </VStack>
                             <Text color={"pink.500"}>200 List</Text>
